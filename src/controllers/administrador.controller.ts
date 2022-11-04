@@ -54,7 +54,7 @@ export class AdministradorController {
     // preparacion para enviar la notificacion
     let destino = administrador.Correo;
     let asunto = 'Registro en Serviautos - Mi Serviteca TIC';
-    let contenido = `Hola ${administrador.Nombres}, su usuario es: ${administrador.Correo} y su clave es: ${clave} --> ${cifrada}`;
+    let contenido = `Hola ${administrador.Nombres}, su usuario es: ${administrador.Correo} y su clave es: ${clave}`;
     fetch(`https://correoservitecatic.herokuapp.com/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
       .then((data: any) => {
       console.log(data);
