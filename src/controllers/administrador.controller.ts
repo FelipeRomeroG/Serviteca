@@ -1,30 +1,31 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Administrador} from '../models';
 import {AdministradorRepository} from '../repositories';
+import {AutenticacionService} from '../services';
+
+const fetch = require('node-fetch'); //importa node fetch para hacer la peticiones a API de notificacion de coreo
 
 export class AdministradorController {
   constructor(
     @repository(AdministradorRepository)
-    public administradorRepository : AdministradorRepository,
-  ) {}
+    public administradorRepository: AdministradorRepository,
+
+    @service(AutenticacionService) //Inyeccion del servicio de autenticación en el constructor del Administrador
+    public servicioAutenticacion: AutenticacionService
+  ) { }
 
   @post('/administradors')
   @response(200, {
@@ -44,7 +45,21 @@ export class AdministradorController {
     })
     administrador: Omit<Administrador, 'id'>,
   ): Promise<Administrador> {
-    return this.administradorRepository.create(administrador);
+    //return this.administradorRepository.create(administrador); linea a modificar para asignar clave al Administrador
+    // mediante las siguiente 4 lineas que emplean el metodo del servicio Autenticacion
+    let clave = this.servicioAutenticacion.GenerarClave();
+    let cifrada = this.servicioAutenticacion.CifrarClave(clave);
+    administrador.password = cifrada;
+    let p = await this.administradorRepository.create(administrador);
+    // preparacion para enviar la notificacion
+    let destino = administrador.Correo;
+    let asunto = 'Registro en Serviautos - Mi Serviteca TIC';
+    let contenido = `Hola ${administrador.Nombres}, su usuario es: ${administrador.Correo} y su clave es: ${clave} --> ${cifrada}`;
+    fetch(`https://correoservitecatic.herokuapp.com/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+      .then((data: any) => {
+      console.log(data);
+      });
+    return p;
   }
 
   @get('/administradors/count')
