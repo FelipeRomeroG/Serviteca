@@ -9,10 +9,11 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
-import {Administrador} from '../models';
+import {Llaves} from '../config/llaves';
+import {Administrador, Credenciales} from '../models';
 import {AdministradorRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 
@@ -55,12 +56,33 @@ export class AdministradorController {
     let destino = administrador.Correo;
     let asunto = 'Registro en Serviautos - Mi Serviteca TIC';
     let contenido = `Hola ${administrador.Nombres}, su usuario es: ${administrador.Correo} y su clave es: ${clave}`;
-    fetch(`https://correoservitecatic.herokuapp.com/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+    fetch(`${Llaves.urlServicioCorreo}/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
       .then((data: any) => {
       console.log(data);
       });
     return p;
   }
+
+  @post('administradors/identificar')
+  @response(200, {
+    description: 'Identificación de Administradores'
+  })
+  async identificar(
+    @requestBody() creds: Credenciales
+    ){
+      let p= await this.servicioAutenticacion.IdentificarAdmin(creds.usuario,creds.clave);
+      if (p) {
+        let token = this.servicioAutenticacion.GenerarTokenJWT(p)
+        return {
+          datos: {nombre: p.Nombres, correo: p.Correo, id: p.id},
+          tk: token
+        }
+      } else {
+        throw new HttpErrors[401]('Datos Invalidos');
+      }
+    }
+
+
 
   @get('/administradors/count')
   @response(200, {

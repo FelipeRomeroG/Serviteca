@@ -1,21 +1,16 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Servicio} from '../models';
 import {ServicioRepository} from '../repositories';
@@ -23,9 +18,10 @@ import {ServicioRepository} from '../repositories';
 export class ServicioController {
   constructor(
     @repository(ServicioRepository)
-    public servicioRepository : ServicioRepository,
-  ) {}
+    public servicioRepository: ServicioRepository,
+  ) { }
 
+  @authenticate('admin')
   @post('/servicios')
   @response(200, {
     description: 'Servicio model instance',
