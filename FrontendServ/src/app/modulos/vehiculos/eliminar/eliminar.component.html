@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col s12 m8 l6 offset-m2 offset-l3">
+        <div class="card">
+            <div class="card-action light-blue lighten-1 white-text" style="text-align: center;">
+                <h4>Eliminar Vehiculo</h4>
+            </div>
+            <div class="card-content">
+                <form [formGroup]="fgValidator">
+                    <input type="hidden" id="id" formControlName="id">
+                    <div class="form-field">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" formControlName="placa">
+                    </div><br>
+
+                    <div class="form-field">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" formControlName="marca">
+                    </div><br>
+
+                    <div class="form-field">
+                        <label for="color">Color</label>
+                        <input type="text" id="color" formControlName="color">
+                    </div><br>
+
+                    <div class="form-field">
+                        <label for="linea">Linea - Referencia</label>
+                        <input type="text" id="linea" formControlName="linea">
+                    </div><br>
+
+                    <div class="form-field">
+                        <label for="ano">Año - modelo</label>
+                        <input type="text" id="ano" formControlName="ano">
+                    </div><br>
+
+                    <div class="form-field">
+                        <label for="clase">Clase Vehic.</label>
+                        <input type="text" id="clase" formControlName="clase">
+                    </div><br>
+
+                    <div class="form-field">
+                        <button [disabled]="!fgValidator.valid" (click)="eliminarVehiculo()"  
+                        class="btn-large waves-effect waves-dark light-blue lighten-1" style="width:100%;">
+                            Eliminar Vehiculo
+                        </button>
+                        
+                    </div><br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
