@@ -21,7 +21,7 @@ export class ServicioController {
     public servicioRepository: ServicioRepository,
   ) { }
 
-  @authenticate('admin')
+  // @authenticate('admin')
   @post('/servicios')
   @response(200, {
     description: 'Servicio model instance',

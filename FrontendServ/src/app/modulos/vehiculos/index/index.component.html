@@ -1,0 +1,32 @@
+<a routerLink="/vehiculos/crear" class="btn light-blue lighten-1">Crear Vehiculo</a>
+
+<table class="striped">
+    <thead>
+      <tr>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Color</th>
+          <th>Linea</th>
+          <th>Año-Modelo</th>
+          <th>Clase</th>
+          <th>Id Cliente</th>
+          <th>Accion</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let vehiculo of vehiculos">
+        <td>{{vehiculo.PlacaVehiculo}}</td>
+        <td>{{vehiculo.MarcaVehiculo}}</td>
+        <td>{{vehiculo.ColorVehiculo}}</td>
+        <td>{{vehiculo.LineaVehiculo}}</td>
+        <td>{{vehiculo.AnoVehiculo}}</td>
+        <td>{{vehiculo.ClaseVehiculo}}</td>
+        <td>{{vehiculo.ClienteId}}</td>
+        <td>
+          <a routerLink="/vehiculos/editar/{{vehiculo.id}}" class="btn light-blue lighten-1 "> Modificar
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
