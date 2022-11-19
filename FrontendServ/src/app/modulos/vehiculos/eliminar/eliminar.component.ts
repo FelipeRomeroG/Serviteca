@@ -73,5 +73,4 @@ export class EliminarComponent implements OnInit {
       this.router.navigate(["/vehiculos"]);
     }
   }
-
 }
